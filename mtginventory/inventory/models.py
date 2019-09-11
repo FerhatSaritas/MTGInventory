@@ -35,4 +35,4 @@ class Card(models.Model):
     colour = models.ForeignKey(Colour, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.name + ' - '+ self.set_name
+        return self.name + ' - '+ str(self.set_name)

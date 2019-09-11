@@ -1,0 +1,29 @@
+{% extends 'inventory/base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+        <div class="container-fluid mt-3">
+            <table class="table table-sm table-dark">
+                <thead>
+                    {% for i in header %}
+                        <th scope="col">{{ i }}</th>
+                    {% endfor %}    
+                </thead>
+                <tbody>
+                    {% for row in rows %}
+                    <tr>
+                        <th scope="row">{{row.id}}</th>
+                        <td>{{row.name}}</td>
+                        <td>{{row.set_name_id}}</td>
+                        <td>{{row.cmc}}</td>
+                        <td>{{row.num_of_cards}}</td>
+                        <td>{{row.state_of_card_id}}</td>
+                        <td>{{row.owner_id}}</td>
+                        <td>{{row.colour_id}}</td>
+                    <tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+{% endblock %}
