@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
+from django.core.paginator import Paginator
 from .models import Card, Player, States, Colour, Expansion
 import logging as logger
 # Create your views here.
@@ -23,8 +24,11 @@ def index(request):
         tmp["set_name_id"] = expansion.name
         tmp["colour_id"] = colour.colour
         items.append(tmp)
+    page = request.GET.get('page')
+    p = Paginator(items, 25)
     
+    cards = p.get_page(page)
     header = ["ID", "Name", "Set", "CMC", "#Karten", "Kartenzustand", "Besitzer", "Farbe/-n"]
     
     logger.warning(header)
-    return render(request, 'inventory/index.html', {'header':header, 'rows':items})
+    return render(request, 'inventory/index.html', {'header':header, 'rows':cards})
