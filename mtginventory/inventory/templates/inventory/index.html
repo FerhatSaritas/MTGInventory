@@ -3,8 +3,8 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-        <div class="container-fluid mt-3">
-            <table class="table table-sm table-dark">
+        <div class="container-fluid mt-3 table-responsive">
+            <table class="table table-bordered table-hover table-dark">
                 <thead>
                     {% for i in header %}
                         <th scope="col">{{ i }}</th>
@@ -13,14 +13,14 @@
                 <tbody>
                     {% for row in rows %}
                     <tr>
-                        <th scope="row">{{row.id}}</th>
-                        <td>{{row.name}}</td>
-                        <td>{{row.set_name_id}}</td>
-                        <td>{{row.cmc}}</td>
-                        <td>{{row.num_of_cards}}</td>
-                        <td>{{row.state_of_card_id}}</td>
-                        <td>{{row.owner_id}}</td>
-                        <td>{{row.colour_id}}</td>
+                        <th scope="row"><span class="mx-auto">{{row.id}}</span></th>
+                        <td><span class="mx-auto">{{row.name}}</span></td>
+                        <td><span class="mx-auto">{{row.set_name_id}}</span></td>
+                        <td><span class="mx-auto">{{row.cmc}}</span></td>
+                        <td><span class="mx-auto">{{row.num_of_cards}}</span></td>
+                        <td><span class="mx-auto">{{row.state_of_card_id}}</span></td>
+                        <td><span class="mx-auto">{{row.owner_id}}</span></td>
+                        <td><span class="mx-auto">{{row.colour_id}}</span></td>
                     <tr>
                     {% endfor %}
                 </tbody>
