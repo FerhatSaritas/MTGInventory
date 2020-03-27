@@ -33,6 +33,7 @@ class Card(models.Model):
     state_of_card = models.ForeignKey(States, on_delete=models.CASCADE)
     owner =  models.ForeignKey(Player, on_delete=models.CASCADE)
     colour = models.ForeignKey(Colour, on_delete=models.CASCADE)
+    img = models.URLField(max_length=400)
 
     def __str__(self):
         return self.name + ' - '+ str(self.set_name)
