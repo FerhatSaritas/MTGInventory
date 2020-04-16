@@ -1,0 +1,64 @@
+{% extends 'inventory/base.html' %}
+
+{% block title %}Home{% endblock %}
+{% load fontawesome %}
+{% load bootstrap4 %}
+
+{% block content %}
+        <button class='btn btn-secondary d-block mx-auto add' data-toggle='modal' data-target="#addCardModal">{% fontawesome_icon 'plus' %} Eintrag hinzufügen</button>
+        <div class="container-fluid mt-3 table-responsive">
+            <table class="table table-bordered table-hover table-dark">
+                <thead>
+                    {% for i in header %}
+                        <th scope="col">{{ i }}</th>
+                    {% endfor %}    
+                </thead>
+                <tbody>
+                    {% for row in rows %}
+                    <tr>
+                        <th scope="row"><span class="mx-auto">{{row.id}}</span></th>
+                        <td><span class="mx-auto">{{row.name}}</span></td>
+                        <td><span class="mx-auto">{{row.set_name_id}}</span></td>
+                        <td><span class="mx-auto">{{row.cmc}}</span></td>
+                        <td><span class="mx-auto">{{row.num_of_cards}}</span></td>
+                        <td><span class="mx-auto">{{row.state_of_card_id}}</span></td>
+                        <td><span class="mx-auto">{{row.owner_id}}</span></td>
+                        <td><span class="mx-auto">{{row.colour_id}}</span></td>
+                    <tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    {% if row.has_previous %}
+                    <li class="page-item disabled">
+                        <a class="page-link" href="?page={{ rows.previous_page_number }}" tabindex="-1" aria-disabled="true">Previous</a>
+                    </li>
+                    {% endif %}
+                      {% if rows.has_next %}
+                    <li class="page-item">
+                    <a class="page-link" href="?page={{ rows.next_page_number }}">Next</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+        
+    <!--- Add Card Modal -->
+        <div class="modal fade" id="addCardModal" tabindex="-1" role="dialog" aria-labelledby="addCardModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addCardModalLabel">Eintrag Hinzufügen</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" data-dismiss="modal">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Hier kommt eine Form, welche aus einer Suche und einem Button besteht. Darunter soll ein leeres Div sein welches dann die Suchergebnisse
+                        auflistet. Die Ergebnisse werden als ein Grid aus bootstrap cards angezeigt, welche wiederum aus dem img URI der Ergebnisse laden.
+                    </div>
+                </div>
+            </div>
+        </div>
+{% endblock %}
