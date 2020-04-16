@@ -30,5 +30,5 @@ def index(request):
     cards = p.get_page(page)
     header = ["ID", "Name", "Set", "CMC", "#Karten", "Kartenzustand", "Besitzer", "Farbe/-n"]
     
-    logger.warning(header)
+    #logger.warning(header)
     return render(request, 'inventory/index.html', {'header':header, 'rows':cards})
