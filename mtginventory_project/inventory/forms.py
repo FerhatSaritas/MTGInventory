@@ -17,6 +17,13 @@ class CardForm(forms.Form):
         owners = kwargs.pop("owners")
         colours = kwargs.pop("colours")
         super(CardForm, self).__init__(*args, **kwargs)
+        self.fields['card_name'].widget.attrs.update({'class': 'form-control'})
+        self.fields['set_name'].widget.attrs.update({'class': 'form-control'})
+        self.fields['cmc'].widget.attrs.update({'class': 'form-control'})
+        self.fields['num_of_cards'].widget.attrs.update({'class': 'form-control'})
+        self.fields['state_of_card'].widget.attrs.update({'class': 'form-control'})
+        self.fields['owner'].widget.attrs.update({'class': 'form-control'})
+        self.fields['colour'].widget.attrs.update({'class': 'form-control'})
         self.fields['state_of_card'].choices = states
         self.fields['owner'].choices = owners
         self.fields['colour'].choices = colours
