@@ -3,10 +3,19 @@ from django.http import HttpResponse
 from django.template import loader
 from django.core.paginator import Paginator
 from .models import Card, Player, States, Colour, Expansion
+from .forms import CardForm
 import logging as logger
 # Create your views here.
 
 def index(request):
+    states, owners, colours = getObjects()
+    if request.method == 'POST':
+        form = CardForm(request.POST, states=states, owners=owners, colours=colours)
+        if form.is_valid():
+            # Der neue Eintrag wird gespeichert
+            logger.warning(request.POST)
+    
+    form = CardForm(states=states, owners=owners, colours=colours)
     template = loader.get_template('inventory/index.html')
     objects = Card.objects.all()
     items=list()
@@ -30,5 +39,22 @@ def index(request):
     cards = p.get_page(page)
     header = ["ID", "Name", "Set", "CMC", "#Karten", "Kartenzustand", "Besitzer", "Farbe/-n"]
     
-    #logger.warning(header)
-    return render(request, 'inventory/index.html', {'header':header, 'rows':cards})
+    context = {
+        'header':header, 
+        'rows':cards, 
+        'form':form
+        }
+    return render(request=request, template_name='inventory/index.html', context=context)
+
+
+def getObjects():
+    states = States.objects.all()
+    states = ((state.__dict__['id'],state.__dict__['state']) for state in states)
+    
+    owners = Player.objects.all()
+    owners = ((owner.__dict__['id'], owner.__dict__['name']) for owner in owners)
+
+    colours = Colour.objects.all()
+    colours = ((colour.__dict__['id'], colour.__dict__['colour']) for colour in colours)
+
+    return [states, owners, colours]

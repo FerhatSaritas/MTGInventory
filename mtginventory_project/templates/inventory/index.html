@@ -55,8 +55,10 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        Hier kommt eine Form, welche aus einer Suche und einem Button besteht. Darunter soll ein leeres Div sein welches dann die Suchergebnisse
-                        auflistet. Die Ergebnisse werden als ein Grid aus bootstrap cards angezeigt, welche wiederum aus dem img URI der Ergebnisse laden.
+                    <form action="" method="post">
+                       {% csrf_token %} 
+                       {{ form }}
+                    </form>
                     </div>
                 </div>
             </div>
