@@ -1,0 +1,11 @@
+.add{
+  border-radius: 12px;
+  top: 10px;
+  font-size: 22px;
+  position: relative;
+  width: 50%;
+}
+
+main{
+    height: 90vh;
+}
