@@ -1,3 +1,4 @@
+from django import forms
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
@@ -8,14 +9,30 @@ import logging as logger
 # Create your views here.
 
 def index(request):
-    states, owners, colours = getObjects()
     if request.method == 'POST':
+        states, owners, colours = getObjects()
         form = CardForm(request.POST, states=states, owners=owners, colours=colours)
         if form.is_valid():
             # Der neue Eintrag wird gespeichert
-            logger.warning(request.POST)
-    
-    form = CardForm(states=states, owners=owners, colours=colours)
+             card_name = form.cleaned_data['card_name']
+             if Expansion.objects.filter(name=form.cleaned_data['set_name']).first():
+                 set_name = Expansion.objects.get(name=form.cleaned_data['set_name'])
+             else:
+                 set_name = Expansion(name=form.cleaned_data['set_name'])
+             set_name.save()
+             cmc = form.cleaned_data['cmc']
+             num_of_cards = form.cleaned_data['num_of_cards']
+             state_of_card = States.objects.get(id=form.cleaned_data['state_of_card'])
+             owner = Player.objects.get(id=form.cleaned_data['owner'])
+             colour = Colour.objects.get(id=form.cleaned_data['colour'])
+             if Card.objects.filter(name=card_name, set_name=set_name, cmc=cmc, num_of_cards=num_of_cards, state_of_card=state_of_card, owner=owner, colour=colour).first():
+                 logger.warning(forms.ValidationError('This entry already exists'))
+             else:
+                new_card = Card(name=card_name, set_name=set_name, cmc=cmc, num_of_cards=num_of_cards, state_of_card=state_of_card, owner=owner, colour=colour, img='')
+                new_card.save()
+                
+    states, owners, colours = getObjects()
+    new_form = CardForm(states=states, owners=owners, colours=colours)
     template = loader.get_template('inventory/index.html')
     objects = Card.objects.all()
     items=list()
@@ -42,7 +59,7 @@ def index(request):
     context = {
         'header':header, 
         'rows':cards, 
-        'form':form
+        'form':new_form
         }
     return render(request=request, template_name='inventory/index.html', context=context)
 
