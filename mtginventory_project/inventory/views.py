@@ -10,12 +10,14 @@ import logging as logger
 
 def index(request):
     if request.method == 'POST':
+        # Chekc if request is a POST action
         states, owners, colours = getObjects()
         form = CardForm(request.POST, states=states, owners=owners, colours=colours)
         if form.is_valid():
-            # Der neue Eintrag wird gespeichert
+            # Read data from the request and store it as a new entry in db
              card_name = form.cleaned_data['card_name']
              if Expansion.objects.filter(name=form.cleaned_data['set_name']).first():
+                 # Check if the expansion already is in the DB
                  set_name = Expansion.objects.get(name=form.cleaned_data['set_name'])
              else:
                  set_name = Expansion(name=form.cleaned_data['set_name'])
@@ -26,11 +28,12 @@ def index(request):
              owner = Player.objects.get(id=form.cleaned_data['owner'])
              colour = Colour.objects.get(id=form.cleaned_data['colour'])
              if Card.objects.filter(name=card_name, set_name=set_name, cmc=cmc, num_of_cards=num_of_cards, state_of_card=state_of_card, owner=owner, colour=colour).first():
+                 # Check if a card with same properties already is in DB
                  logger.warning(forms.ValidationError('This entry already exists'))
              else:
                 new_card = Card(name=card_name, set_name=set_name, cmc=cmc, num_of_cards=num_of_cards, state_of_card=state_of_card, owner=owner, colour=colour, img='')
                 new_card.save()
-                
+
     states, owners, colours = getObjects()
     new_form = CardForm(states=states, owners=owners, colours=colours)
     template = loader.get_template('inventory/index.html')
