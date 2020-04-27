@@ -27,11 +27,12 @@ def index(request):
              state_of_card = States.objects.get(id=form.cleaned_data['state_of_card'])
              owner = Player.objects.get(id=form.cleaned_data['owner'])
              colour = Colour.objects.get(id=form.cleaned_data['colour'])
-             if Card.objects.filter(name=card_name, set_name=set_name, cmc=cmc, num_of_cards=num_of_cards, state_of_card=state_of_card, owner=owner, colour=colour).first():
+             place = form.cleaned_data['place']
+             if Card.objects.filter(name=card_name, set_name=set_name, cmc=cmc, num_of_cards=num_of_cards, state_of_card=state_of_card, owner=owner, colour=colour, place=place).first():
                  # Check if a card with same properties already is in DB
                  logger.warning(forms.ValidationError('This entry already exists'))
              else:
-                new_card = Card(name=card_name, set_name=set_name, cmc=cmc, num_of_cards=num_of_cards, state_of_card=state_of_card, owner=owner, colour=colour, img='')
+                new_card = Card(name=card_name, set_name=set_name, cmc=cmc, num_of_cards=num_of_cards, state_of_card=state_of_card, owner=owner, colour=colour, img='', place=place)
                 new_card.save()
 
     states, owners, colours = getObjects()
@@ -57,7 +58,7 @@ def index(request):
     p = Paginator(items, 25)
     
     cards = p.get_page(page)
-    header = ["ID", "Name", "Set", "CMC", "#Karten", "Kartenzustand", "Besitzer", "Farbe/-n"]
+    header = ["Name", "Set", "CMC", "#Karten", "Plan?", "Besitzer", "Farbe/-n", "Wo?"]
     
     context = {
         'header':header, 
